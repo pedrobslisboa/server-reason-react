@@ -227,7 +227,7 @@ module Array : sig
   val concat : other:'a t -> 'a t -> 'a t
   val concatMany : arrays:'a t array -> 'a t -> 'a t
   val includes : value:'a -> 'a t -> bool
-  val join : ?sep:string -> 'a t -> string
+  val join : ?sep:string -> string t -> string
   val indexOf : value:'a -> ?start:int -> 'a t -> int
   val lastIndexOf : value:'a -> 'a t -> int
   val lastIndexOfFrom : value:'a -> start:int -> 'a t -> int
@@ -313,10 +313,9 @@ end = struct
 
   let join ?sep arr =
     (* js bindings can really take in `'a array`, while native is constrained to `string array` *)
-    let any_arr = Obj.magic arr in
     match sep with
-    | None -> Stdlib.Array.to_list any_arr |> String.concat ","
-    | Some sep -> Stdlib.Array.to_list any_arr |> String.concat sep
+    | None -> Stdlib.Array.to_list arr |> String.concat ","
+    | Some sep -> Stdlib.Array.to_list arr |> String.concat sep
 
   let lastIndexOf ~value arr =
     let rec aux idx =
@@ -688,7 +687,11 @@ end = struct
     in
     repeat' str "" count
 
-  let replace ~search:_ ~replacement:_ _ = notImplemented "Js.String" "replace"
+  (* If pattern is a string, only the first occurrence will be replaced.
+     https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/replace *)
+  let replace ~search ~replacement str =
+    let search_regexp = Str.regexp_string search in
+    Str.replace_first search_regexp replacement str
 
   let replaceByRe ~regexp ~replacement str =
     let rec replace_all str =
@@ -1505,7 +1508,7 @@ end = struct
   let ceil_int _ = notImplemented "Js.Math" "ceil_int"
   let ceil_float _ = notImplemented "Js.Math" "ceil_float"
   let clz32 _ = notImplemented "Js.Math" "clz32"
-  let cos _ = notImplemented "Js.Math" "cos"
+  let cos = cos
   let cosh _ = notImplemented "Js.Math" "cosh"
   let exp _ = notImplemented "Js.Math" "exp"
   let expm1 _ = notImplemented "Js.Math" "expm1"
@@ -1535,7 +1538,7 @@ end = struct
   let round _ = notImplemented "Js.Math" "round"
   let sign_int _ = notImplemented "Js.Math" "sign_int"
   let sign_float _ = notImplemented "Js.Math" "sign_float"
-  let sin _ = notImplemented "Js.Math" "sin"
+  let sin = sin
   let sinh _ = notImplemented "Js.Math" "sinh"
   let sqrt _ = notImplemented "Js.Math" "sqrt"
   let tan _ = notImplemented "Js.Math" "tan"

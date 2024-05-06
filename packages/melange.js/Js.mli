@@ -254,7 +254,7 @@ module Array : sig
   val concatMany : arrays:'a t t -> 'a t -> 'a t
   val includes : value:'a -> 'a t -> bool
   val indexOf : value:'a -> ?start:int -> 'a t -> int
-  val join : ?sep:string -> 'a t -> string
+  val join : ?sep:string -> string t -> string
   val lastIndexOf : value:'a -> 'a t -> int
   val lastIndexOfFrom : value:'a -> start:int -> 'a t -> int
   val slice : ?start:int -> ?end_:int -> 'a t -> 'a t
@@ -354,11 +354,7 @@ module String : sig
     not_implemented "is not implemented in native under server-reason-react.js"]
 
   val repeat : count:int -> t -> t
-
   val replace : search:t -> replacement:t -> t -> t
-  [@@alert
-    not_implemented "is not implemented in native under server-reason-react.js"]
-
   val replaceByRe : regexp:Re.t -> replacement:t -> t -> t
 
   val unsafeReplaceBy0 : regexp:Re.t -> f:(t -> int -> t -> t) -> t -> t
@@ -1114,8 +1110,6 @@ module Math : sig
     not_implemented "is not implemented in native under server-reason-react.js"]
 
   val cos : float -> float
-  [@@alert
-    not_implemented "is not implemented in native under server-reason-react.js"]
 
   val cosh : float -> float
   [@@alert
@@ -1234,8 +1228,6 @@ module Math : sig
     not_implemented "is not implemented in native under server-reason-react.js"]
 
   val sin : float -> float
-  [@@alert
-    not_implemented "is not implemented in native under server-reason-react.js"]
 
   val sinh : float -> float
   [@@alert
