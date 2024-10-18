@@ -411,13 +411,13 @@ let string_tests =
           "playground";
         assert_string (Js.String.substring ~start:12 "playground") "");
     test "toLowerCase" (fun () ->
-        assert_string (Js.String.toLowerCase "ABC") "abc"
-        (* assert_string (Js.String.toLowerCase {js|ΣΠ|js}) {js|σπ|js}; *)
-        (* assert_string (Js.String.toLowerCase {js|ΠΣ|js}) {js|πς|js} *));
+        assert_string (Js.String.toLowerCase "ASCII: ABC") "ascii: abc";
+        assert_string (Js.String.toLowerCase "Non ASCII: ΣΠ") "non ascii: σπ";
+        assert_string (Js.String.toLowerCase "Non ASCII: ΠΣ") "non ascii: πς");
     test "toUpperCase" (fun () ->
-        assert_string (Js.String.toUpperCase "abc") "ABC"
-        (* assert_string (Js.String.toUpperCase {js|Straße|js}) {js|STRASSE|js} *)
-        (* assert_string (Js.String.toLowerCase {js|πς|js}) {js|ΠΣ|js} *));
+        assert_string (Js.String.toUpperCase "abc") "ABC";
+        assert_string (Js.String.toUpperCase "Non ASCII: σπ") "NON ASCII: ΣΠ";
+        assert_string (Js.String.toUpperCase "Non ASCII: πς") "NON ASCII: ΠΣ");
     test "trim" (fun () ->
         assert_string (Js.String.trim "   abc def   ") "abc def";
         assert_string (Js.String.trim "\n\r\t abc def \n\n\t\r ") "abc def");
